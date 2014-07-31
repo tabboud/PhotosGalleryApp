@@ -1,0 +1,11 @@
+Photos Gallery Application
+
+This is the source code / Xcode project for the following youtube.com tutorial
+
+https://www.youtube.com/watch?v=ztIBNHOm35E
+
+This tutorial demonstrates how to use the new Photos Framework provided by Apple with the Swift programming language.
+
+
+
+*This version is updated to work with Xcode6 Beta 4! There are a few errors in the video, since I made the tutorial using Beta 1, but this code reflects the changes that must be made.
