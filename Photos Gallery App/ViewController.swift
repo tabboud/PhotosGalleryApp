@@ -10,13 +10,14 @@ import UIKit
 import Photos
 
 let reuseIdentifier = "PhotoCell"
-let albumName = "My App"            //App specific folder name
+let albumName = "Tony Abboud25"            //App specific folder name
 
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var albumFound : Bool = false
     var assetCollection: PHAssetCollection!
     var photosAsset: PHFetchResult!
+    let assetThumbnailSize:CGSize!
     
     
 //Actions & Outlets
@@ -60,8 +61,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         //Check if the folder exists, if not, create it
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
-        let collection = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: fetchOptions)
-        if(collection.firstObject){
+        let collection:PHFetchResult = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: fetchOptions)
+       
+        if let first_Obj:AnyObject = collection.firstObject{
             //found the album
             self.albumFound = true
             self.assetCollection = collection.firstObject as PHAssetCollection
@@ -74,14 +76,23 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 completionHandler: {(success:Bool, error:NSError!)in
                     NSLog("Creation of folder -> %@", (success ? "Success":"Error!"))
                     self.albumFound = (success ? true:false)
-                })
+            })
         }
-        
     }
     
     override func viewWillAppear(animated: Bool) {
+        println("ViewWillAppear")
+        
+        /*
+        CGFloat scale = [UIScreen mainScreen].scale;
+        CGSize cellSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
+        AssetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
+        */
+        let scale:CGFloat = UIScreen.mainScreen().scale
+
+        
         //fetch the photos from collection
-        self.navigationController.hidesBarsOnTap = false
+        self.navigationController?.hidesBarsOnTap = false   //!! Use optional chaining
         self.photosAsset = PHAsset.fetchAssetsInAssetCollection(self.assetCollection, options: nil)
         
         //TODO: Insert a label that says 'No Photos' when empty
@@ -94,11 +105,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         super.didReceiveMemoryWarning()
     }
     
-    
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier as String == "viewLargePhoto"){
             let controller:ViewPhoto = segue.destinationViewController as ViewPhoto
-            let indexPath: NSIndexPath = self.collectionView.indexPathForCell(sender as UICollectionViewCell)
+            let indexPath: NSIndexPath = self.collectionView.indexPathForCell(sender as UICollectionViewCell)!
             controller.index = indexPath.item
             controller.photosAsset = self.photosAsset
             controller.assetCollection = self.assetCollection
@@ -106,9 +117,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     
+
     
-//UICollectionViewDataSource Methods
-    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int{
+   
+//UICollectionViewDataSource Methods (Remove the "!" on variables in the function prototype)
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         var count: Int = 0
         if(self.photosAsset != nil){
             count = self.photosAsset.count
@@ -116,15 +129,20 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         return count;
     }
     
-    func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell!{
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
         let cell: PhotoThumbnail = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as PhotoThumbnail
         
         //Modify the cell
         let asset: PHAsset = self.photosAsset[indexPath.item] as PHAsset
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: .AspectFill, options: nil, resultHandler: {(result, info)in
+
+        //Create options for image quality //!!This increase performance greatly!!
+        let m_options = PHImageRequestOptions()
+        m_options.resizeMode = PHImageRequestOptionsResizeMode.None
+        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 150, height: 150), contentMode: .AspectFill, options: m_options, resultHandler: {(result, info)in
                 cell.setThumbnailImage(result)
             })
 
+        
         return cell
     }
     
@@ -160,19 +178,5 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func imagePickerControllerDidCancel(picker: UIImagePickerController!){
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
 }
 

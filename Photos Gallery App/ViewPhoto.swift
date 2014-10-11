@@ -16,7 +16,7 @@ class ViewPhoto: UIViewController {
     
     //@Return to photos
     @IBAction func btnCancel(sender : AnyObject) {
-        self.navigationController.popToRootViewControllerAnimated(true)
+        self.navigationController?.popToRootViewControllerAnimated(true) //!!Added Optional Chaining
     }
     
     //@Export photo
@@ -32,7 +32,13 @@ class ViewPhoto: UIViewController {
             PHPhotoLibrary.sharedPhotoLibrary().performChanges({
                 let request = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection)
                 request.removeAssets([self.photosAsset[self.index]])
-                }, completionHandler: {(success, error)in
+                
+                // Check if the user deleted the last photo, if so return to library
+                if(self.photosAsset.count <= 1){    // Selected delete, and only 1 photo left
+                    println("I AM HERE")
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                }
+            }, completionHandler: {(success, error)in
                 
                     NSLog("\nDeleted Image -> %@", (success ? "Success":"Error!"))
                     alert.dismissViewControllerAnimated(true, completion: nil)
@@ -41,16 +47,15 @@ class ViewPhoto: UIViewController {
                     if(self.photosAsset.count == 0){
                         //no photos left
                         self.imgView.image = nil
-                        println("No Images Left!!")
-                        //!!Pop to root view controller
+                        println("No Images Left!!\nPhoto count = \(self.photosAsset.count)")
+                        //!!Pop to root view controller OR return
+                        return
                     }
                     if(self.index >= self.photosAsset.count){
                         self.index = self.photosAsset.count - 1
                     }
                     self.displayPhoto()
                 })
-            
-            
             }))
         alert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: {(alertAction)in
             //Do not delete photo
@@ -69,7 +74,7 @@ class ViewPhoto: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController.hidesBarsOnTap = true
+        self.navigationController?.hidesBarsOnTap = true    //!!Added Optional Chaining
         
         self.displayPhoto()
     }
