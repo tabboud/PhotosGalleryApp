@@ -409,6 +409,7 @@
 				CEEF3A53196B5402002668C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CEEF3A54196B5402002668C0 /* Build configuration list for PBXNativeTarget "Photos Gallery AppTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +418,7 @@
 				CEEF3A56196B5402002668C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

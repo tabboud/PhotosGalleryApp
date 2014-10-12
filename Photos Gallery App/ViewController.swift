@@ -5,19 +5,20 @@
 //  Created by Tony on 7/7/14.
 //  Copyright (c) 2014 Abbouds Corner. All rights reserved.
 //
+//  Updated to Xcode 6.0.1 GM
 
 import UIKit
 import Photos
 
 let reuseIdentifier = "PhotoCell"
-let albumName = "Tony Abboud25"            //App specific folder name
+let albumName = "App Folder"            //App specific folder name
 
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var albumFound : Bool = false
     var assetCollection: PHAssetCollection!
     var photosAsset: PHFetchResult!
-    let assetThumbnailSize:CGSize!
+    var assetThumbnailSize:CGSize!
     
     
 //Actions & Outlets
@@ -43,17 +44,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBAction func btnPhotoAlbum(sender : AnyObject) {
             var picker : UIImagePickerController = UIImagePickerController()
             picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary)!
             picker.delegate = self
             picker.allowsEditing = false
             self.presentViewController(picker, animated: true, completion: nil)
     }
     
     @IBOutlet var collectionView : UICollectionView!
-    
-    
-    
-    
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,14 +66,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             self.albumFound = true
             self.assetCollection = collection.firstObject as PHAssetCollection
         }else{
+            //Album placeholder for the asset collection, used to reference collection in completion handler
+            var albumPlaceholder:PHObjectPlaceholder!
             //create the folder
             NSLog("\nFolder \"%@\" does not exist\nCreating now...", albumName)
             PHPhotoLibrary.sharedPhotoLibrary().performChanges({
                 let request = PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle(albumName)
+                albumPlaceholder = request.placeholderForCreatedAssetCollection
                 },
                 completionHandler: {(success:Bool, error:NSError!)in
                     NSLog("Creation of folder -> %@", (success ? "Success":"Error!"))
                     self.albumFound = (success ? true:false)
+                    if(success){
+                        let collection = PHAssetCollection.fetchAssetCollectionsWithLocalIdentifiers([albumPlaceholder.localIdentifier], options: nil)
+                        self.assetCollection = collection?.firstObject as PHAssetCollection
+                    }
             })
         }
     }
@@ -83,13 +88,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewWillAppear(animated: Bool) {
         println("ViewWillAppear")
         
-        /*
-        CGFloat scale = [UIScreen mainScreen].scale;
-        CGSize cellSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
-        AssetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
-        */
+        // Get size of the collectionView cell for thumbnail image
         let scale:CGFloat = UIScreen.mainScreen().scale
-
+        let cellSize = (self.collectionView.collectionViewLayout as UICollectionViewFlowLayout).itemSize
+        self.assetThumbnailSize = CGSizeMake(cellSize.width, cellSize.height)
         
         //fetch the photos from collection
         self.navigationController?.hidesBarsOnTap = false   //!! Use optional chaining
@@ -135,10 +137,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         //Modify the cell
         let asset: PHAsset = self.photosAsset[indexPath.item] as PHAsset
 
-        //Create options for image quality //!!This increase performance greatly!!
-        let m_options = PHImageRequestOptions()
-        m_options.resizeMode = PHImageRequestOptionsResizeMode.None
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 150, height: 150), contentMode: .AspectFill, options: m_options, resultHandler: {(result, info)in
+// Create options for retrieving image (Degrades quality if using .Fast)
+//        let imageOptions = PHImageRequestOptions()
+//        imageOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
+        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: self.assetThumbnailSize, contentMode: .AspectFill, options: nil, resultHandler: {(result, info)in
                 cell.setThumbnailImage(result)
             })
 
