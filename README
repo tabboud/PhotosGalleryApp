@@ -8,4 +8,5 @@ This tutorial demonstrates how to use the new Photos Framework provided by Apple
 
 
 
-*This version is updated to work with Xcode6 Beta 4! There are a few errors in the video, since I made the tutorial using Beta 1, but this code reflects the changes that must be made.
+*This version is updated to work with Xcode 6.0.1 GM! 
+** There are a few errors in the video, since I made the tutorial using Beta 2, but this code reflects the changes that must be made.
