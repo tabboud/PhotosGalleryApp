@@ -143,8 +143,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: self.assetThumbnailSize, contentMode: .AspectFill, options: nil, resultHandler: {(result, info)in
                 cell.setThumbnailImage(result)
             })
-
-        
         return cell
     }
     
@@ -167,15 +165,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         //Implement if allowing user to edit the selected image
         //let editedImage = info.objectForKey("UIImagePickerControllerEditedImage") as UIImage
         
-        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-            let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-            let assetPlaceholder = createAssetRequest.placeholderForCreatedAsset
-            let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection, assets: self.photosAsset)
-            albumChangeRequest.addAssets([assetPlaceholder])
-            }, completionHandler: {(success, error)in
-                NSLog("Adding Image to Library -> %@", (success ? "Sucess":"Error!"))
-                picker.dismissViewControllerAnimated(true, completion: nil)
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0), {
+            PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+                let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+                let assetPlaceholder = createAssetRequest.placeholderForCreatedAsset
+                let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection, assets: self.photosAsset)
+                albumChangeRequest.addAssets([assetPlaceholder])
+                }, completionHandler: {(success, error)in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        NSLog("Adding Image to Library -> %@", (success ? "Sucess":"Error!"))
+                        picker.dismissViewControllerAnimated(true, completion: nil)
+                    })
             })
+        
+        })
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController!){
         picker.dismissViewControllerAnimated(true, completion: nil)

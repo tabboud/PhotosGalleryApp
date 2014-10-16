@@ -88,8 +88,12 @@ class ViewPhoto: UIViewController {
     
     
     func displayPhoto(){
+        // Set targetSize of image to iPhone screen size
+        let screenSize: CGSize = UIScreen.mainScreen().bounds.size
+        let targetSize = CGSizeMake(screenSize.width, screenSize.height)
+
         let imageManager = PHImageManager.defaultManager()
-        var ID = imageManager.requestImageForAsset(self.photosAsset[self.index] as PHAsset, targetSize: PHImageManagerMaximumSize, contentMode: .AspectFit, options: nil, resultHandler: {
+        var ID = imageManager.requestImageForAsset(self.photosAsset[self.index] as PHAsset, targetSize: targetSize, contentMode: .AspectFit, options: nil, resultHandler: {
             (result, info)->Void in
                 self.imgView.image = result
             })
