@@ -109,7 +109,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier as String == "viewLargePhoto"){
+        if(segue.identifier! as String == "viewLargePhoto"){
             let controller:ViewPhoto = segue.destinationViewController as ViewPhoto
             let indexPath: NSIndexPath = self.collectionView.indexPathForCell(sender as UICollectionViewCell)!
             controller.index = indexPath.item
