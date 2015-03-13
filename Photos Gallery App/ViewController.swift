@@ -20,6 +20,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var photosAsset: PHFetchResult!
     var assetThumbnailSize:CGSize!
     
+    @IBOutlet var noPhotosLabel: UILabel!
     
 //Actions & Outlets
     @IBAction func btnCamera(sender : AnyObject) {
@@ -75,11 +76,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 albumPlaceholder = request.placeholderForCreatedAssetCollection
                 },
                 completionHandler: {(success:Bool, error:NSError!)in
-                    NSLog("Creation of folder -> %@", (success ? "Success":"Error!"))
-                    self.albumFound = (success ? true:false)
                     if(success){
+                        println("Successfully created folder")
+                        self.albumFound = true
                         let collection = PHAssetCollection.fetchAssetCollectionsWithLocalIdentifiers([albumPlaceholder.localIdentifier], options: nil)
                         self.assetCollection = collection?.firstObject as PHAssetCollection
+                        
+                    }else{
+                        println("Error creating folder")
+                        self.albumFound = false
                     }
             })
         }
@@ -97,8 +102,13 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         self.navigationController?.hidesBarsOnTap = false   //!! Use optional chaining
         self.photosAsset = PHAsset.fetchAssetsInAssetCollection(self.assetCollection, options: nil)
         
-        //TODO: Insert a label that says 'No Photos' when empty
-        
+        if let photoCnt = self.photosAsset?.count{
+            if(photoCnt == 0){
+                self.noPhotosLabel.hidden = false
+            }else{
+                self.noPhotosLabel.hidden = true
+            }
+        }
         self.collectionView.reloadData()
     }
     
