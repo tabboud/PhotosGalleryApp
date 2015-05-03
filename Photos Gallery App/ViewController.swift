@@ -65,7 +65,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         if let first_Obj:AnyObject = collection.firstObject{
             //found the album
             self.albumFound = true
-            self.assetCollection = collection.firstObject as PHAssetCollection
+            self.assetCollection = first_Obj as! PHAssetCollection
         }else{
             //Album placeholder for the asset collection, used to reference collection in completion handler
             var albumPlaceholder:PHObjectPlaceholder!
@@ -79,9 +79,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                     if(success){
                         println("Successfully created folder")
                         self.albumFound = true
-                        let collection = PHAssetCollection.fetchAssetCollectionsWithLocalIdentifiers([albumPlaceholder.localIdentifier], options: nil)
-                        self.assetCollection = collection?.firstObject as PHAssetCollection
-                        
+                        if let collection = PHAssetCollection.fetchAssetCollectionsWithLocalIdentifiers([albumPlaceholder.localIdentifier], options: nil){
+                            self.assetCollection = collection.firstObject as! PHAssetCollection
+                        }
                     }else{
                         println("Error creating folder")
                         self.albumFound = false
@@ -95,8 +95,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         // Get size of the collectionView cell for thumbnail image
         let scale:CGFloat = UIScreen.mainScreen().scale
-        let cellSize = (self.collectionView.collectionViewLayout as UICollectionViewFlowLayout).itemSize
-        self.assetThumbnailSize = CGSizeMake(cellSize.width, cellSize.height)
+        if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout{
+            let cellSize = layout.itemSize
+            self.assetThumbnailSize = CGSizeMake(cellSize.width, cellSize.height)
+        }
         
         //fetch the photos from collection
         self.navigationController?.hidesBarsOnTap = false   //!! Use optional chaining
@@ -119,12 +121,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier! as String == "viewLargePhoto"){
-            let controller:ViewPhoto = segue.destinationViewController as ViewPhoto
-            let indexPath: NSIndexPath = self.collectionView.indexPathForCell(sender as UICollectionViewCell)!
-            controller.index = indexPath.item
-            controller.photosAsset = self.photosAsset
-            controller.assetCollection = self.assetCollection
+        if(segue.identifier == "viewLargePhoto"){
+            if let controller:ViewPhoto = segue.destinationViewController as? ViewPhoto{
+                if let cell = sender as? UICollectionViewCell{
+                    if let indexPath: NSIndexPath = self.collectionView.indexPathForCell(cell){
+                        controller.index = indexPath.item
+                        controller.photosAsset = self.photosAsset
+                        controller.assetCollection = self.assetCollection
+                    }
+                }
+            }
         }
     }
     
@@ -142,14 +148,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-        let cell: PhotoThumbnail = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as PhotoThumbnail
+        let cell: PhotoThumbnail = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! PhotoThumbnail
         
         //Modify the cell
-        let asset: PHAsset = self.photosAsset[indexPath.item] as PHAsset
+        let asset: PHAsset = self.photosAsset[indexPath.item] as! PHAsset
 
-// Create options for retrieving image (Degrades quality if using .Fast)
-//        let imageOptions = PHImageRequestOptions()
-//        imageOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
+        // Create options for retrieving image (Degrades quality if using .Fast)
+        //        let imageOptions = PHImageRequestOptions()
+        //        imageOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: self.assetThumbnailSize, contentMode: .AspectFill, options: nil, resultHandler: {(result, info)in
                 cell.setThumbnailImage(result)
             })
@@ -157,41 +163,40 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
 //UICollectionViewDelegateFlowLayout methods
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat{
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat{
         return 4
     }
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat{
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat{
         return 1
     }
     
     
     
-    
-    
 //UIImagePickerControllerDelegate Methods
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: NSDictionary!){
-        let image = info.objectForKey("UIImagePickerControllerOriginalImage") as UIImage
-        
-        //Implement if allowing user to edit the selected image
-        //let editedImage = info.objectForKey("UIImagePickerControllerEditedImage") as UIImage
-        
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0), {
-            PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-                let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-                let assetPlaceholder = createAssetRequest.placeholderForCreatedAsset
-                let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection, assets: self.photosAsset)
-                albumChangeRequest.addAssets([assetPlaceholder])
-                }, completionHandler: {(success, error)in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        NSLog("Adding Image to Library -> %@", (success ? "Sucess":"Error!"))
-                        picker.dismissViewControllerAnimated(true, completion: nil)
-                    })
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]){
+        if let image: UIImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
+    
+            //Implement if allowing user to edit the selected image
+            //let editedImage = info.objectForKey("UIImagePickerControllerEditedImage") as UIImage
+            
+            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+            dispatch_async(dispatch_get_global_queue(priority, 0), {
+                PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+                    let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+                    let assetPlaceholder = createAssetRequest.placeholderForCreatedAsset
+                    let albumChangeRequest = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection, assets: self.photosAsset)
+                    albumChangeRequest.addAssets([assetPlaceholder])
+                    }, completionHandler: {(success, error)in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            NSLog("Adding Image to Library -> %@", (success ? "Sucess":"Error!"))
+                            picker.dismissViewControllerAnimated(true, completion: nil)
+                        })
+                })
+            
             })
-        
-        })
+        }
     }
-    func imagePickerControllerDidCancel(picker: UIImagePickerController!){
+    func imagePickerControllerDidCancel(picker: UIImagePickerController){
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
 }
