@@ -93,10 +93,12 @@ class ViewPhoto: UIViewController {
         let targetSize = CGSizeMake(screenSize.width, screenSize.height)
 
         let imageManager = PHImageManager.defaultManager()
-        var ID = imageManager.requestImageForAsset(self.photosAsset[self.index] as PHAsset, targetSize: targetSize, contentMode: .AspectFit, options: nil, resultHandler: {
-            (result, info)->Void in
-                self.imgView.image = result
+        if let asset = self.photosAsset[self.index] as? PHAsset{
+            var ID = imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil, resultHandler: {
+                (result, info)->Void in
+                    self.imgView.image = result
             })
+        }
     }
 
 
