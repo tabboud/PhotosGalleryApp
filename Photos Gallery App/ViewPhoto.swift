@@ -22,7 +22,7 @@ class ViewPhoto: UIViewController {
     
     //@Export photo
     @IBAction func btnExport(sender : AnyObject) {
-        println("Export")
+        print("Export")
     }
     
     //@Remove photo from Collection
@@ -32,8 +32,9 @@ class ViewPhoto: UIViewController {
             handler: {(alertAction)in
                 PHPhotoLibrary.sharedPhotoLibrary().performChanges({
                     //Delete Photo
-                    let request = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection)
-                    request.removeAssets([self.photosAsset[self.index]])
+                    if let request = PHAssetCollectionChangeRequest(forAssetCollection: self.assetCollection){
+                        request.removeAssets([self.photosAsset[self.index]])
+                    }
                     },
                     completionHandler: {(success, error)in
                         NSLog("\nDeleted Image -> %@", (success ? "Success":"Error!"))
@@ -43,7 +44,7 @@ class ViewPhoto: UIViewController {
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.photosAsset = PHAsset.fetchAssetsInAssetCollection(self.assetCollection, options: nil)
                                 if(self.photosAsset.count == 0){
-                                    println("No Images Left!!")
+                                    print("No Images Left!!")
                                     self.navigationController?.popToRootViewControllerAnimated(true)
                                 }else{
                                     if(self.index >= self.photosAsset.count){
@@ -53,7 +54,7 @@ class ViewPhoto: UIViewController {
                                 }
                             })
                         }else{
-                            println("Error: \(error)")
+                            print("Error: \(error)")
                         }
                 })
             }))
@@ -94,7 +95,7 @@ class ViewPhoto: UIViewController {
 
         let imageManager = PHImageManager.defaultManager()
         if let asset = self.photosAsset[self.index] as? PHAsset{
-            var ID = imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil, resultHandler: {
+            imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil, resultHandler: {
                 (result, info)->Void in
                     self.imgView.image = result
             })
