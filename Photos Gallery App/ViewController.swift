@@ -173,7 +173,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     
 //UIImagePickerControllerDelegate Methods
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]){
         if let image: UIImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
     
             //Implement if allowing user to edit the selected image
