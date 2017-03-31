@@ -13,4 +13,4 @@ Link to the video tutorial for this code. The video is outdated since it was cre
 [Tutorial Video](https://www.youtube.com/watch?v=ztIBNHOm35E)
 
 NOTE:
-    This is up to date with XCode 7 and Swift 2.0
+    This is up to date with XCode 8 and Swift 3.0
