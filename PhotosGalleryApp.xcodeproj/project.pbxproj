@@ -28,13 +28,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CEEF3A35196B5402002668C0 /* Photos Gallery App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photos Gallery App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEEF3A35196B5402002668C0 /* PhotosGalleryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotosGalleryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEEF3A39196B5402002668C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEEF3A3A196B5402002668C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEEF3A3C196B5402002668C0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CEEF3A3F196B5402002668C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CEEF3A41196B5402002668C0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CEEF3A47196B5402002668C0 /* Photos Gallery AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Photos Gallery AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEEF3A47196B5402002668C0 /* PhotosGalleryAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotosGalleryAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEEF3A4C196B5402002668C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEEF3A4D196B5402002668C0 /* Photos_Gallery_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos_Gallery_AppTests.swift; sourceTree = "<group>"; };
 		CEEF3A57196B578D002668C0 /* ViewPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPhoto.swift; sourceTree = "<group>"; };
@@ -65,8 +65,8 @@
 			isa = PBXGroup;
 			children = (
 				CEEF3A59196B5B81002668C0 /* Photos.framework */,
-				CEEF3A37196B5402002668C0 /* Photos Gallery App */,
-				CEEF3A4A196B5402002668C0 /* Photos Gallery AppTests */,
+				CEEF3A37196B5402002668C0 /* PhotosGalleryApp */,
+				CEEF3A4A196B5402002668C0 /* PhotosGalleryAppTests */,
 				CEEF3A36196B5402002668C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,13 +74,13 @@
 		CEEF3A36196B5402002668C0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CEEF3A35196B5402002668C0 /* Photos Gallery App.app */,
-				CEEF3A47196B5402002668C0 /* Photos Gallery AppTests.xctest */,
+				CEEF3A35196B5402002668C0 /* PhotosGalleryApp.app */,
+				CEEF3A47196B5402002668C0 /* PhotosGalleryAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CEEF3A37196B5402002668C0 /* Photos Gallery App */ = {
+		CEEF3A37196B5402002668C0 /* PhotosGalleryApp */ = {
 			isa = PBXGroup;
 			children = (
 				CEEF3A3A196B5402002668C0 /* AppDelegate.swift */,
@@ -91,7 +91,7 @@
 				CEEF3A41196B5402002668C0 /* Images.xcassets */,
 				CEEF3A38196B5402002668C0 /* Supporting Files */,
 			);
-			path = "Photos Gallery App";
+			path = PhotosGalleryApp;
 			sourceTree = "<group>";
 		};
 		CEEF3A38196B5402002668C0 /* Supporting Files */ = {
@@ -102,13 +102,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CEEF3A4A196B5402002668C0 /* Photos Gallery AppTests */ = {
+		CEEF3A4A196B5402002668C0 /* PhotosGalleryAppTests */ = {
 			isa = PBXGroup;
 			children = (
 				CEEF3A4D196B5402002668C0 /* Photos_Gallery_AppTests.swift */,
 				CEEF3A4B196B5402002668C0 /* Supporting Files */,
 			);
-			path = "Photos Gallery AppTests";
+			path = PhotosGalleryAppTests;
 			sourceTree = "<group>";
 		};
 		CEEF3A4B196B5402002668C0 /* Supporting Files */ = {
@@ -122,9 +122,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CEEF3A34196B5402002668C0 /* Photos Gallery App */ = {
+		CEEF3A34196B5402002668C0 /* PhotosGalleryApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CEEF3A51196B5402002668C0 /* Build configuration list for PBXNativeTarget "Photos Gallery App" */;
+			buildConfigurationList = CEEF3A51196B5402002668C0 /* Build configuration list for PBXNativeTarget "PhotosGalleryApp" */;
 			buildPhases = (
 				CEEF3A31196B5402002668C0 /* Sources */,
 				CEEF3A32196B5402002668C0 /* Frameworks */,
@@ -134,14 +134,14 @@
 			);
 			dependencies = (
 			);
-			name = "Photos Gallery App";
+			name = PhotosGalleryApp;
 			productName = "Photos Gallery App";
-			productReference = CEEF3A35196B5402002668C0 /* Photos Gallery App.app */;
+			productReference = CEEF3A35196B5402002668C0 /* PhotosGalleryApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CEEF3A46196B5402002668C0 /* Photos Gallery AppTests */ = {
+		CEEF3A46196B5402002668C0 /* PhotosGalleryAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CEEF3A54196B5402002668C0 /* Build configuration list for PBXNativeTarget "Photos Gallery AppTests" */;
+			buildConfigurationList = CEEF3A54196B5402002668C0 /* Build configuration list for PBXNativeTarget "PhotosGalleryAppTests" */;
 			buildPhases = (
 				CEEF3A43196B5402002668C0 /* Sources */,
 				CEEF3A44196B5402002668C0 /* Frameworks */,
@@ -152,9 +152,9 @@
 			dependencies = (
 				CEEF3A49196B5402002668C0 /* PBXTargetDependency */,
 			);
-			name = "Photos Gallery AppTests";
+			name = PhotosGalleryAppTests;
 			productName = "Photos Gallery AppTests";
-			productReference = CEEF3A47196B5402002668C0 /* Photos Gallery AppTests.xctest */;
+			productReference = CEEF3A47196B5402002668C0 /* PhotosGalleryAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -165,19 +165,21 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Abbouds Corner";
 				TargetAttributes = {
 					CEEF3A34196B5402002668C0 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0820;
 					};
 					CEEF3A46196B5402002668C0 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0820;
 						TestTargetID = CEEF3A34196B5402002668C0;
 					};
 				};
 			};
-			buildConfigurationList = CEEF3A30196B5402002668C0 /* Build configuration list for PBXProject "Photos Gallery App" */;
+			buildConfigurationList = CEEF3A30196B5402002668C0 /* Build configuration list for PBXProject "PhotosGalleryApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -190,8 +192,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CEEF3A34196B5402002668C0 /* Photos Gallery App */,
-				CEEF3A46196B5402002668C0 /* Photos Gallery AppTests */,
+				CEEF3A34196B5402002668C0 /* PhotosGalleryApp */,
+				CEEF3A46196B5402002668C0 /* PhotosGalleryAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,7 +242,7 @@
 /* Begin PBXTargetDependency section */
 		CEEF3A49196B5402002668C0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CEEF3A34196B5402002668C0 /* Photos Gallery App */;
+			target = CEEF3A34196B5402002668C0 /* PhotosGalleryApp */;
 			targetProxy = CEEF3A48196B5402002668C0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -270,8 +272,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -280,6 +284,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -313,8 +318,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -322,6 +329,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -331,6 +339,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -340,10 +349,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = "Photos Gallery App/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PhotosGalleryApp/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AbboudsCorner.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -352,10 +362,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = "Photos Gallery App/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PhotosGalleryApp/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AbboudsCorner.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -376,6 +387,7 @@
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AbboudsCorner.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -393,6 +405,7 @@
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AbboudsCorner.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -400,7 +413,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CEEF3A30196B5402002668C0 /* Build configuration list for PBXProject "Photos Gallery App" */ = {
+		CEEF3A30196B5402002668C0 /* Build configuration list for PBXProject "PhotosGalleryApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CEEF3A4F196B5402002668C0 /* Debug */,
@@ -409,7 +422,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CEEF3A51196B5402002668C0 /* Build configuration list for PBXNativeTarget "Photos Gallery App" */ = {
+		CEEF3A51196B5402002668C0 /* Build configuration list for PBXNativeTarget "PhotosGalleryApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CEEF3A52196B5402002668C0 /* Debug */,
@@ -418,7 +431,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CEEF3A54196B5402002668C0 /* Build configuration list for PBXNativeTarget "Photos Gallery AppTests" */ = {
+		CEEF3A54196B5402002668C0 /* Build configuration list for PBXNativeTarget "PhotosGalleryAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CEEF3A55196B5402002668C0 /* Debug */,
