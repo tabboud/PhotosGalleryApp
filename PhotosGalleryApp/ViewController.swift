@@ -19,6 +19,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var assetCollection: PHAssetCollection = PHAssetCollection()
     var photosAsset: PHFetchResult<PHAsset>!
     var assetThumbnailSize:CGSize!
+    var collections: PHFetchResult<PHAssetCollection>!
     
     @IBOutlet var noPhotosLabel: UILabel!
     
@@ -39,8 +40,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 }))
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
+
+
     }
     @IBAction func btnPhotoAlbum(_ sender : AnyObject) {
             let picker : UIImagePickerController = UIImagePickerController()
@@ -50,45 +51,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             picker.allowsEditing = false
             self.present(picker, animated: true, completion: nil)
     }
-    
+
     @IBOutlet var collectionView : UICollectionView!
 
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         //Check if the folder exists, if not, create it
+        //TODO: Need to handle the case where the user has to provide permissions to access photos.
+        // The folder will fail to create
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
-        let collection:PHFetchResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-       
-        if let first_Obj:AnyObject = collection.firstObject{
-            //found the album
-            self.albumFound = true
-            self.assetCollection = first_Obj as! PHAssetCollection
-        }else{
-            //Album placeholder for the asset collection, used to reference collection in completion handler
-            var albumPlaceholder:PHObjectPlaceholder!
-            //create the folder
-            NSLog("\nFolder \"%@\" does not exist\nCreating now...", albumName)
-            PHPhotoLibrary.shared().performChanges({
-                let request = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
-                albumPlaceholder = request.placeholderForCreatedAssetCollection
-                },
-                completionHandler: {(success:Bool, error:Error?) in
-                    if(success){
-                        print("Successfully created folder")
-                        self.albumFound = true
-                        let collection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
-                        self.assetCollection = collection.firstObject!
-                    }else{
-                        print("Error creating folder")
-                        self.albumFound = false
-                    }
-            })
-        }
+        self.collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+
+        // register an observer to check when the user provides permissions
+
+        PHPhotoLibrary.shared().register(self)
+
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         
         // Get size of the collectionView cell for thumbnail image
@@ -131,9 +114,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             }
         }
     }
-    
-    
-
     
    
 //UICollectionViewDataSource Methods (Remove the "!" on variables in the function prototype)
@@ -202,3 +182,45 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
 }
 
+
+// PHPhotoLibraryChangeObserver
+extension ViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        NSLog("Inside photoLibraryDidChange")
+        if let changeDetails = changeInstance.changeDetails(for: collections) {
+            collections = changeDetails.fetchResultAfterChanges
+            NSLog("inside change details")
+
+            // Check if the album was created. If not, then create it
+             if let first_Obj:AnyObject = collections.firstObject{
+                NSLog("Found the album here")
+                //found the album
+                self.albumFound = true
+                self.assetCollection = first_Obj as! PHAssetCollection
+             } else {
+                 //Album placeholder for the asset collection, used to reference collection in completion handler
+                 var albumPlaceholder:PHObjectPlaceholder!
+                 //create the folder
+                 NSLog("\nFolder \"%@\" does not exist\nCreating now...", albumName)
+                 PHPhotoLibrary.shared().performChanges({
+                     let request = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+                     albumPlaceholder = request.placeholderForCreatedAssetCollection
+                 }, completionHandler: {(success:Bool, error:Error?) in
+                     if(success){
+                         print("Successfully created folder")
+                         self.albumFound = true
+                         let collection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
+                         self.assetCollection = collection.firstObject!
+                     }else{
+                         print("Error creating folder")
+                         self.albumFound = false
+                     }
+                 })
+             }
+
+        }
+
+        NSLog("Inside photoLibraryDidChange Again")
+
+    }
+}
